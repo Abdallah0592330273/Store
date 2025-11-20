@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="DataAccess/DataAccess.csproj" />
+  <Project Path="Domain/Domain.csproj" />
+  <Project Path="Infastructure/Infastructure.csproj" />
+  <Project Path="Store.web/Store.Api.csproj" />
+</Solution>
