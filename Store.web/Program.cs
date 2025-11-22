@@ -6,6 +6,7 @@ using Infastructure.Repositories;
 using Infastructure.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,8 +17,11 @@ builder.Services.AddControllers();
 
 builder.Services.AddDbContext<StoreDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-// Dependancy injection
+
+
 builder.Services.AddSwaggerGen();
+
+// Dependancy injection
 builder.Services.AddAutoMapper(typeof(Mapper));
 builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
 
