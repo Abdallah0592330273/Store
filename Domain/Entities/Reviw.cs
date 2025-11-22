@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -9,6 +10,7 @@ namespace Domain.Entities
 {
     public class Reviw
     {
+        [Key]
         public int reviewId { get; set;}
         [ForeignKey("productId")]
         public int productId { get; set; }

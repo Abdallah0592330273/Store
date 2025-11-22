@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Interfaces
 {
-    public interface IUserRepository : IRepository<User>
+    public interface IOrderRepository : IRepository<Order>
     {
     }
 }

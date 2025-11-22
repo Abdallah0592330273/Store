@@ -1,5 +1,4 @@
 ﻿using DataAccess.Context;
-using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,45 +9,73 @@ using System.Threading.Tasks;
 
 namespace Infastructure.Repositories
 {
-    public class GenericRepository<T> : IRepository<T> where T : class
+    using Domain.Interfaces.GenericInterfaces;
+    using Microsoft.EntityFrameworkCore;
+    using System.Linq.Expressions;
+
+    // Assuming you have a DbContext named ApplicationDbContext
+    public class GenericRepository<TEntity> : IRepository<TEntity> where TEntity : class
     {
-        private readonly StoreDbContext _db;
-        private readonly DbSet<T> _dbset;
+        protected readonly DbContext _context;
+        protected readonly DbSet<TEntity> _dbSet;
 
-        public GenericRepository(StoreDbContext db, DbSet<T> dbset)
+        public GenericRepository(DbContext context)
         {
-            _db = db;
-            _dbset = dbset;
+            _context = context;
+            _dbSet = context.Set<TEntity>(); // Sets the correct DbSet based on TEntity
         }
 
-        public Task? CreateAsync(T entity)
+        // ------------------------------------------------------------------
+        // IRepository Implementation
+        // ------------------------------------------------------------------
+
+        // 1. GetByIdAsync
+        public async Task<TEntity?> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _dbSet.FindAsync(id);
         }
 
-        public Task? DeleteAsync(T entity)
+        // 2. GetAllAsync
+        public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _dbSet.ToListAsync();
         }
 
-        public Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> filter, bool isTracked = true)
+        // 3. FindAsync (Get by Property Method)
+        public async Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate)
         {
-            throw new NotImplementedException();
+            return await _dbSet.Where(predicate).ToListAsync();
         }
 
-        public Task? GetAsync(Expression<Func<T, bool>> filter)
+        // 4. AddAsync
+        public async Task AddAsync(TEntity entity)
         {
-            throw new NotImplementedException();
+            await _dbSet.AddAsync(entity);
         }
 
-        public void save()
+        // 5. AddRangeAsync
+        public async Task AddRangeAsync(IEnumerable<TEntity> entities)
         {
-            throw new NotImplementedException();
+            await _dbSet.AddRangeAsync(entities);
         }
 
-        public Task? UpdateAsync(T entity)
+        // 6. Update
+        public void Update(TEntity entity)
         {
-            throw new NotImplementedException();
+            _dbSet.Attach(entity);
+            _context.Entry(entity).State = EntityState.Modified;
+        }
+
+        // 7. Remove
+        public void Remove(TEntity entity)
+        {
+            _dbSet.Remove(entity);
+        }
+
+        // 8. RemoveRange
+        public void RemoveRange(IEnumerable<TEntity> entities)
+        {
+            _dbSet.RemoveRange(entities);
         }
     }
 }
