@@ -1,0 +1,10 @@
+<Solution>
+  <Project Path="Store.DataAccess/Store.DataAccess.csproj" />
+  <Project Path="Store.Infastructure/Store.Infastructure.csproj">
+    <BuildDependency Project="Store.DataAccess/Store.DataAccess.csproj" />
+  </Project>
+  <Project Path="Store.webApi/Store.webApi.csproj">
+    <BuildDependency Project="Store.DataAccess/Store.DataAccess.csproj" />
+    <BuildDependency Project="Store.Infastructure/Store.Infastructure.csproj" />
+  </Project>
+</Solution>
